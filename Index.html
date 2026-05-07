@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENSATIONAL BODY 💎 - Nutrition & Meal Prep</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0f0607 0%, #2a1419 50%, #0f0607 100%);
+            color: #f5e6d3;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(180deg, rgba(255, 107, 157, 0.25) 0%, rgba(255, 107, 157, 0.05) 100%);
+            padding: 40px 20px 30px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255, 107, 157, 0.3);
+        }
+
+        .header-subtitle {
+            font-size: 11px;
+            letter-spacing: 8px;
+            color: #FF6B9D;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #f5e6d3, #FF6B9D, #FFB6C1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+
+        .header-info {
+            font-size: 13px;
+            color: rgba(255, 107, 157, 0.8);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            padding: 20px 16px 0;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 8px;
+            border-radius: 14px;
+            border: none;
+            background: rgba(255,255,255,0.05);
+            color: rgba(245,230,211,0.6);
+            font-size: 11px;
+            font-weight: normal;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            min-width: 80px;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #FF6B9D, #FF8C42);
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 20px 16px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* DAY SELECTOR */
+        .day-selector {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+
+        .day-btn {
+            padding: 12px 10px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: rgba(245,230,211,0.5);
+            cursor: pointer;
+            white-space: nowrap;
+            text-align: center;
+            font-size: 10px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .day-btn.active {
+            border: 2px solid #FF6B9D;
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.4), rgba(255, 107, 157, 0.2));
+            color: #fff;
+        }
+
+        .day-emoji {
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+
+        .day-name {
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* DAY INFO */
+        .day-info {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.3), rgba(255, 107, 157, 0.1));
+            border: 2px solid rgba(255, 107, 157, 0.5);
+            border-radius: 18px;
+            padding: 16px;
+            display: flex;
+            gap: 14px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .day-info-emoji {
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+
+        .day-info-text h2 {
+            font-size: 11px;
+            color: #FF6B9D;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .day-cals {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FF6B9D;
+        }
+
+        .day-macros {
+            font-size: 11px;
+            color: rgba(245,230,211,0.6);
+            margin-top: 4px;
+        }
+
+        /* MEALS */
+        .meal {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .meal.expanded {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.25), rgba(255, 107, 157, 0.1));
+            border-radius: 14px 14px 0 0;
+            border: 2px solid rgba(255, 107, 157, 0.5);
+        }
+
+        .meal-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255, 107, 157, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #FF6B9D;
+            flex-shrink: 0;
+        }
+
+        .meal-info {
+            flex: 1;
+        }
+
+        .meal-name {
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .meal-time {
+            font-size: 11px;
+            color: rgba(245,230,211,0.5);
+            margin-top: 2px;
+        }
+
+        .meal-macros {
+            text-align: right;
+            flex-shrink: 0;
+            font-size: 11px;
+            color: #FF6B9D;
+            font-weight: bold;
+        }
+
+        .meal-details {
+            background: rgba(255, 107, 157, 0.08);
+            border: 2px solid rgba(255, 107, 157, 0.3);
+            border-top: none;
+            border-radius: 0 0 14px 14px;
+            padding: 16px;
+        }
+
+        .meal-recipe {
+            font-size: 12px;
+            font-weight: bold;
+            color: #FF6B9D;
+            margin-bottom: 8px;
+        }
+
+        .ingredients-label {
+            font-size: 10px;
+            color: rgba(245,230,211,0.4);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .ingredient {
+            font-size: 11px;
+            color: rgba(245,230,211,0.8);
+            margin-bottom: 4px;
+            padding-left: 12px;
+            border-left: 2px solid rgba(255, 107, 157, 0.4);
+        }
+
+        .meal-tip {
+            background: rgba(255, 107, 157, 0.15);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 11px;
+            color: #FF6B9D;
+            border-left: 4px solid #FF6B9D;
+            margin-top: 12px;
+        }
+
+        /* SHOPPING LIST */
+        .shopping-category {
+            margin-bottom: 20px;
+        }
+
+        .shopping-category-title {
+            font-size: 13px;
+            color: #FFB6C1;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+
+        .shopping-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .shopping-item.checked {
+            background: rgba(255, 107, 157, 0.2);
+            border-color: rgba(255, 107, 157, 0.4);
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+
+        .shopping-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .shopping-item-info {
+            flex: 1;
+        }
+
+        .shopping-item-name {
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .shopping-item-qty {
+            font-size: 11px;
+            color: rgba(245,230,211,0.5);
+            margin-top: 2px;
+        }
+
+        .shopping-item-price {
+            color: #FFB6C1;
+            font-weight: bold;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        /* MEAL PREP */
+        .mealprep-box {
+            background: rgba(255, 107, 157, 0.15);
+            border: 2px solid rgba(255, 107, 157, 0.3);
+            border-radius: 14px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        .mealprep-title {
+            font-size: 13px;
+            color: #FFB6C1;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .mealprep-item {
+            font-size: 12px;
+            color: rgba(245,230,211,0.7);
+            margin-bottom: 8px;
+            padding-left: 12px;
+            border-left: 2px solid #FFB6C1;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(255, 107, 157, 0.05));
+            border: 2px solid rgba(255, 107, 157, 0.3);
+            border-radius: 14px;
+            padding: 16px;
+            margin-top: 16px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .summary-label {
+            font-size: 11px;
+            color: rgba(245,230,211,0.4);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .summary-values {
+            font-size: 16px;
+            font-weight: bold;
+            color: #FF6B9D;
+        }
+
+        /* SUPPLEMENTS */
+        .supplement-item {
+            background: rgba(255, 107, 157, 0.15);
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .supplement-info {
+            flex: 1;
+        }
+
+        .supplement-name {
+            font-weight: bold;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .supplement-detail {
+            font-size: 11px;
+            color: rgba(245,230,211,0.5);
+            margin-top: 2px;
+        }
+
+        .supplement-benefit {
+            text-align: right;
+            color: #FFB6C1;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .timing-box {
+            background: rgba(255, 107, 157, 0.15);
+            border: 2px solid rgba(255, 107, 157, 0.3);
+            border-radius: 14px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        .timing-title {
+            font-size: 11px;
+            color: #FFB6C1;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .timing-content {
+            font-size: 12px;
+            color: rgba(245,230,211,0.7);
+            line-height: 1.8;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 22px;
+            color: #FFB6C1;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 12px;
+            color: rgba(245,230,211,0.5);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-subtitle">🍽️ Nutrition Plan 💎</div>
+        <h1>SENSATIONAL BODY 💎</h1>
+        <div class="header-info">1388 kcal/jour | 185P 125C 72L | -1.4kg/semaine | 85.4 → 73kg</div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('nutrition')">🍽️ Nutrition</button>
+        <button class="tab-btn" onclick="showTab('shopping')">🛒 Courses</button>
+        <button class="tab-btn" onclick="showTab('mealprep')">🧊 Meal Prep</button>
+        <button class="tab-btn" onclick="showTab('supplements')">💊 Compléments</button>
+    </div>
+
+    <!-- NUTRITION TAB -->
+    <div id="nutrition" class="content">
+        <div class="day-selector" id="daySelector"></div>
+        <div id="dayInfo"></div>
+        <div id="meals"></div>
+    </div>
+
+    <!-- SHOPPING TAB -->
+    <div id="shopping" class="content hidden">
+        <h3>🛒 Liste de Courses à Cocher</h3>
+        <p class="subtitle">Cliquez pour cocher les articles</p>
+        <div id="shoppingList"></div>
+    </div>
+
+    <!-- MEAL PREP TAB -->
+    <div id="mealprep" class="content hidden">
+        <h3>🧊 Meal Prep Dimanche</h3>
+        <p class="subtitle">Comment préparer votre semaine</p>
+        <div class="mealprep-box">
+            <div class="mealprep-title">📋 DIMANCHE - PREP EN 60 MIN :</div>
+            <div class="mealprep-item">✅ <strong>Patate douce (1.5kg) :</strong> Couper en bâtons → Rôtir 40min à 200°C → Refroidir → 14 tupperware (1/jour)</div>
+            <div class="mealprep-item">✅ <strong>Riz blanc (1kg cru) :</strong> Cuire → 1.5kg cuit → 7 tupperware (200g chaque) → Frigo 5j + congélateur 2j</div>
+            <div class="mealprep-item">✅ <strong>Poulet (1.5kg) :</strong> Poêler 30min → Diviser 7 portions → Frigo 3-4j + congélateur reste</div>
+            <div class="mealprep-item">✅ <strong>Épinard (500g) :</strong> Vapeur 10min → 4 tupperware → Frigo 4j</div>
+            <div class="mealprep-item">✅ <strong>Brocoli (500g) :</strong> Vapeur 10min → 4 tupperware → Frigo 4j</div>
+        </div>
+
+        <div class="mealprep-box" style="margin-top: 16px;">
+            <div class="mealprep-title">⏰ GAIN DE TEMPS :</div>
+            <div class="mealprep-item">🎯 <strong>Dimanche 45-60 min</strong> = <strong>ZÉRO cuisine</strong> semaine entière</div>
+            <div class="mealprep-item">🎯 Tous les jours = assembler 5 min = manger 3 min</div>
+            <div class="mealprep-item">🎯 Tupperware prêts = pas d'excuse !</div>
+        </div>
+
+        <div class="mealprep-box" style="margin-top: 16px;">
+            <div class="mealprep-title">🥶 CONSERVATION :</div>
+            <div class="mealprep-item">Frigo = 3-4 jours (lun-jeu)</div>
+            <div class="mealprep-item">Congélateur = 2 jours (ven-dim)</div>
+            <div class="mealprep-item">Décongeler veille = au frigo la nuit</div>
+            <div class="mealprep-item">Réchauffer = 30 sec micro-ondes</div>
+        </div>
+    </div>
+
+    <!-- SUPPLEMENTS TAB -->
+    <div id="supplements" class="content hidden">
+        <h3>💊 Compléments Essentiels</h3>
+        <p class="subtitle">Pour protéger le muscle en déficit agressif</p>
+        <div id="supplementsList"></div>
+        <div class="timing-box">
+            <div class="timing-title">⏰ TIMING QUOTIDIEN :</div>
+            <div class="timing-content">
+                <strong>6h30 :</strong> Multivitamines + Créatine<br>
+                <strong>15h :</strong> Spiruline<br>
+                <strong>20h30 :</strong> Protéine poudre<br>
+                <strong>21h30 :</strong> Magnésium + eau<br>
+                <strong>Électrolytes :</strong> matin + soir quotidien
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const nutritionData = [
+            {
+                day: "LUNDI",
+                emoji: "🥚",
+                totalCals: 1388,
+                macros: { p: 185, c: 125, l: 72 },
+                meals: [
+                    { name: "🌅 Petit-Déj 6h30", cals: 400, p: 38, c: 45, l: 10, recipe: "Oeufs Toast Fromage Blanc Fruit", ingredients: ["3 oeufs entiers (210 kcal | 18P 1G 15L)", "1 toast pain complet (110 kcal | 4P 20G 1L)", "150g fromage blanc 0% (50 kcal | 12P 3G 0L)", "1 banane (100 kcal | 1P 27G 0L)", "1 cuillère olive oil (120 kcal | 0P 0G 14L)"], tip: "⚡ Protéines + glucides = énergie cardio matin" },
+                    { name: "🥗 Déjeuner 12h30", cals: 450, p: 45, c: 50, l: 15, recipe: "Poulet Riz Brocoli Avocat", ingredients: ["Poulet poitrine 180g (280 kcal | 52P 0G 6L)", "Riz blanc 150g cuit (105 kcal | 2P 23G 0L)", "Brocoli 150g vapeur (45 kcal | 5P 8G 0L)", "1/4 avocat (60 kcal | 1P 3G 6L)", "1 cuillère olive (120 kcal | 0P 0G 14L)"], tip: "💪 Protéines maigres + glucides complexes" },
+                    { name: "🍌 Snack 1 15h", cals: 150, p: 20, c: 15, l: 5, recipe: "Yaourt Grec Fruit Noix", ingredients: ["Yaourt grec 200g (110 kcal | 20P 7G 0L)", "1 pomme (80 kcal | 0P 20G 0L)", "10 amandes (70 kcal | 2.5P 3G 6L)"], tip: "🎯 Protéines + fiber = satiété" },
+                    { name: "🍎 Snack 2 PRÉ-GYM 17h", cals: 150, p: 10, c: 15, l: 5, recipe: "Patate Douce Protéine", ingredients: ["Patate douce rôtie 150g (65 kcal | 1P 15G 0L)", "Protéine poudre 1 scoop (120 kcal | 25P 2G 1L)", "1 cuillère miel (60 kcal | 0P 16G 0L)"], tip: "⚡ Glucides rapides avant gym = énergie" },
+                    { name: "🍖 Dîner POST-GYM 20h30", cals: 238, p: 62, c: 0, l: 37, recipe: "Salmon Oeufs Épinard", ingredients: ["Salmon poêlé 200g (350 kcal | 40P 0G 20L)", "3 oeufs (210 kcal | 18P 1G 15L)", "Épinard cuit 200g (60 kcal | 8P 8G 1L)"], tip: "💎 Protéines + oméga3 = récupération muscle" }
+                ]
+            },
+            {
+                day: "MARDI",
+                emoji: "🏋️",
+                totalCals: 1388,
+                macros: { p: 185, c: 125, l: 72 },
+                meals: [
+                    { name: "🌅 Petit-Déj 6h30", cals: 380, p: 35, c: 50, l: 10, recipe: "Oeufs Avocat Toast Orange", ingredients: ["3 oeufs (210 kcal | 18P 1G 15L)", "1/2 avocat (120 kcal | 1P 6G 12L)", "1 toast pain complet (110 kcal | 4P 20G 1L)", "1 orange (50 kcal | 1P 12G 0L)"], tip: "✨ Lipides sains pour hormones" },
+                    { name: "🥗 Déjeuner 12h30", cals: 480, p: 50, c: 48, l: 16, recipe: "Boeuf Pâtes Tomate Parmesan", ingredients: ["Boeuf maigre 200g (320 kcal | 50P 0G 14L)", "Pâtes complet 130g cuit (140 kcal | 6P 28G 1L)", "Sauce tomate + tomate 150g (40 kcal | 2P 8G 0L)", "Olives noires 20g (50 kcal | 0P 1G 5L)", "Fromage parmesan 20g (80 kcal | 8P 1G 5L)"], tip: "🔥 Boeuf = fer + créatine naturelle" },
+                    { name: "🍌 Snack 1 15h", cals: 130, p: 25, c: 8, l: 3, recipe: "Protéine Shake Fruit", ingredients: ["Protéine poudre 1 scoop (120 kcal | 25P 2G 1L)", "1 banane (105 kcal | 1P 27G 0L)", "Eau"], tip: "💪 Protéines rapides = absorption immédiate" },
+                    { name: "🍎 Snack 2 PRÉ-GYM 17h", cals: 160, p: 12, c: 18, l: 5, recipe: "Riz Blanc Fruit Sec Amandes", ingredients: ["Riz blanc 100g cuit (130 kcal | 2P 29G 0L)", "Raisins secs 30g (85 kcal | 1P 22G 0L)", "Amandes 10g (60 kcal | 2P 2G 5L)"], tip: "⚡ Glucides + minéraux rapides" },
+                    { name: "🍖 Dîner POST-GYM 20h30", cals: 218, p: 58, c: 1, l: 38, recipe: "Oeufs Courgette Beurre", ingredients: ["6 oeufs (420 kcal | 36P 2G 30L)", "Courgette 300g poêlée (60 kcal | 4P 9G 1L)", "Beurre 10g (72 kcal | 0P 0G 8L)"], tip: "🧈 Beurre = lécithine cerveau" }
+                ]
+            },
+            {
+                day: "MERCREDI",
+                emoji: "🥜",
+                totalCals: 1388,
+                macros: { p: 185, c: 125, l: 72 },
+                meals: [
+                    { name: "🌅 Petit-Déj 6h30", cals: 380, p: 40, c: 45, l: 10, recipe: "Flocons Avoine Protéine Fruit Miel", ingredients: ["Flocons avoine 50g (190 kcal | 8P 27G 4L)", "Protéine poudre 30g (120 kcal | 24P 2G 1L)", "Lait écrémé 150ml (50 kcal | 5P 7G 0L)", "1 poire (60 kcal | 0P 15G 0L)", "Miel 1 cuillère (60 kcal | 0P 16G 0L)"], tip: "🌾 Avoine = fibres + énergie durable" },
+                    { name: "🥗 Déjeuner 12h30", cals: 450, p: 48, c: 50, l: 15, recipe: "Oeufs Riz Épinard", ingredients: ["6 oeufs pochés/bouillis (420 kcal | 36P 2G 30L)", "Riz blanc 130g cuit (115 kcal | 2.5P 25G 0L)", "Épinard 150g cuit (45 kcal | 6P 6G 0L)", "Huile olive 0.5 cuillère (60 kcal | 0P 0G 7L)"], tip: "🧠 Épinard = fer + magnésium" },
+                    { name: "🍌 Snack 1 15h", cals: 150, p: 20, c: 15, l: 5, recipe: "Fromage Blanc Fruit Noix", ingredients: ["Fromage blanc 250g 0% (85 kcal | 20P 12G 0L)", "1 pomme (80 kcal | 0P 20G 0L)", "Noix 15g (100 kcal | 2P 3G 10L)"], tip: "🥜 Noix = oméga3 pour cheveux" },
+                    { name: "🍎 Snack 2 PRÉ-GYM 17h", cals: 140, p: 8, c: 20, l: 4, recipe: "Patate Douce Miel", ingredients: ["Patate douce 180g (80 kcal | 1.5P 18G 0L)", "Miel 1 cuillère (60 kcal | 0P 16G 0L)"], tip: "🔥 Glucides rapides avant effort" },
+                    { name: "🍖 Dîner POST-GYM 20h30", cals: 268, p: 69, c: 0, l: 38, recipe: "Poulet Beurre Salade", ingredients: ["Poulet poitrine 250g (385 kcal | 56P 0G 17L)", "Laitue 200g (25 kcal | 2P 4G 0L)", "Beurre 12g (85 kcal | 0P 0G 10L)", "Vinaigre"], tip: "💪 Protéines maigres ultra concentrées" }
+                ]
+            },
+            {
+                day: "JEUDI (REFEED)",
+                emoji: "🎉",
+                totalCals: 1688,
+                macros: { p: 185, c: 205, l: 72 },
+                meals: [
+                    { name: "🌅 Petit-Déj 6h30", cals: 400, p: 38, c: 45, l: 10, recipe: "Oeufs Toast Fromage Blanc Fruit", ingredients: ["3 oeufs (210 kcal | 18P 1G 15L)", "1 toast pain complet (110 kcal | 4P 20G 1L)", "150g fromage blanc 0% (50 kcal | 12P 3G 0L)", "1 banane (100 kcal | 1P 27G 0L)", "1 cuillère olive oil (120 kcal | 0P 0G 14L)"], tip: "✨ REFEED = +300 calories" },
+                    { name: "🥗 Déjeuner REFEED+ 12h30", cals: 500, p: 45, c: 70, l: 15, recipe: "Poulet Riz Brocoli PORTION AUGMENTÉE", ingredients: ["Poulet 180g (280 kcal | 52P 0G 6L)", "Riz blanc 200g cuit (140 kcal | 2.5P 31G 0L)", "Brocoli 150g (45 kcal | 5P 8G 0L)", "1/4 avocat (60 kcal | 1P 3G 6L)", "Olive oil 0.5 cuillère (120 kcal | 0P 0G 14L)"], tip: "🎯 +100g riz = métabolisme réinitialise" },
+                    { name: "🍌 Snack 1 REFEED+ 15h", cals: 200, p: 20, c: 30, l: 5, recipe: "Yaourt Fruit Granola", ingredients: ["Yaourt grec 200g (110 kcal | 20P 7G 0L)", "1 banane (105 kcal | 1P 27G 0L)", "Granola 30g (140 kcal | 4P 18G 5L)"], tip: "🎉 Granola OK le jeudi" },
+                    { name: "🍎 Snack 2 PRÉ-GYM 17h", cals: 150, p: 10, c: 20, l: 5, recipe: "Patate Douce Fruit Miel", ingredients: ["Patate douce 150g (65 kcal | 1P 15G 0L)", "1 pêche (35 kcal | 1P 8G 0L)", "Miel 1 cuillère (60 kcal | 0P 16G 0L)"], tip: "⚡ Énergie avant séance" },
+                    { name: "🍖 Dîner POST-GYM 20h30", cals: 238, p: 62, c: 0, l: 37, recipe: "Salmon Oeufs Épinard", ingredients: ["Salmon poêlé 200g (350 kcal | 40P 0G 20L)", "3 oeufs (210 kcal | 18P 1G 15L)", "Épinard 200g (60 kcal | 8P 8G 1L)"], tip: "💎 Protéines + récupération" },
+                    { name: "🍫 BONUS REFEED 21h", cals: 200, p: 0, c: 40, l: 5, recipe: "Chocolat Dark Banana", ingredients: ["Chocolat noir 70% 40g (220 kcal | 3P 15G 12L)", "1 banane (105 kcal | 1P 27G 0L)"], tip: "🍫 PLAISIR après 3 jours strict" }
+                ]
+            },
+            {
+                day: "VENDREDI",
+                emoji: "🐟",
+                totalCals: 1388,
+                macros: { p: 185, c: 125, l: 72 },
+                meals: [
+                    { name: "🌅 Petit-Déj 6h30", cals: 380, p: 35, c: 50, l: 10, recipe: "Oeufs Avocat Toast Orange", ingredients: ["3 oeufs (210 kcal | 18P 1G 15L)", "1/2 avocat (120 kcal | 1P 6G 12L)", "1 toast pain complet (110 kcal | 4P 20G 1L)", "1 orange (50 kcal | 1P 12G 0L)"], tip: "🥑 Avocat = beauté" },
+                    { name: "🥗 Déjeuner 12h30", cals: 450, p: 45, c: 50, l: 15, recipe: "Poisson Pâtes Tomate", ingredients: ["Poisson blanc 200g poêlé (260 kcal | 48P 0G 6L)", "Pâtes complet 120g cuit (135 kcal | 5P 27G 1L)", "Sauce tomate (40 kcal | 2P 8G 0L)", "Olives noires 20g (50 kcal | 0P 1G 5L)", "Fromage parmesan 20g (80 kcal | 8P 1G 5L)"], tip: "🐟 Poisson blanc = léger + protéines" },
+                    { name: "🍌 Snack 1 15h", cals: 130, p: 25, c: 8, l: 3, recipe: "Protéine Shake Fruit", ingredients: ["Protéine poudre 1 scoop (120 kcal | 25P 2G 1L)", "1 banane (105 kcal | 1P 27G 0L)", "Eau"], tip: "💪 Rapide et efficace" },
+                    { name: "🍎 Snack 2 PRÉ-GYM 17h", cals: 160, p: 12, c: 18, l: 5, recipe: "Riz Blanc Fruit Sec Amandes", ingredients: ["Riz blanc 100g cuit (130 kcal | 2P 29G 0L)", "Raisins secs 30g (85 kcal | 1P 22G 0L)", "Amandes 10g (60 kcal | 2P 2G 5L)"], tip: "⚡ Énergie stable" },
+                    { name: "🍖 Dîner POST-GYM 20h30", cals: 268, p: 69, c: 0, l: 38, recipe: "Poulet Beurre Salade", ingredients: ["Poulet poitrine 250g (385 kcal | 56P 0G 17L)", "Laitue 200g (25 kcal | 2P 4G 0L)", "Beurre 12g (85 kcal | 0P 0G 10L)", "Vinaigre"], tip: "💪 Clôture semaine en protéines" }
+                ]
+            },
+            {
+                day: "SAMEDI",
+                emoji: "💪",
+                totalCals: 1388,
+                macros: { p: 185, c: 125, l: 72 },
+                meals: [
+                    { name: "🌅 Petit-Déj 6h30", cals: 380, p: 40, c: 45, l: 10, recipe: "Flocons Avoine Protéine Fruit Miel", ingredients: ["Flocons avoine 50g (190 kcal | 8P 27G 4L)", "Protéine poudre 30g (120 kcal | 24P 2G 1L)", "Lait écrémé 150ml (50 kcal | 5P 7G 0L)", "1 poire (60 kcal | 0P 15G 0L)", "Miel 1 cuillère (60 kcal | 0P 16G 0L)"], tip: "🌾 Énergie pour HIIT samedi" },
+                    { name: "🥗 Déjeuner 12h30", cals: 450, p: 48, c: 50, l: 15, recipe: "Oeufs Riz Épinard", ingredients: ["6 oeufs (420 kcal | 36P 2G 30L)", "Riz blanc 130g cuit (115 kcal | 2.5P 25G 0L)", "Épinard 150g cuit (45 kcal | 6P 6G 0L)", "Huile olive 0.5 (60 kcal | 0P 0G 7L)"], tip: "🧠 Fer + calcium" },
+                    { name: "🍌 Snack 1 15h", cals: 150, p: 20, c: 15, l: 5, recipe: "Fromage Blanc Fruit Noix", ingredients: ["Fromage blanc 250g 0% (85 kcal | 20P 12G 0L)", "1 pomme (80 kcal | 0P 20G 0L)", "Noix 15g (100 kcal | 2P 3G 10L)"], tip: "🥜 Oméga3" },
+                    { name: "🍎 Snack 2 PRÉ-GYM 17h", cals: 140, p: 8, c: 20, l: 4, recipe: "Patate Douce Miel", ingredients: ["Patate douce 180g (80 kcal | 1.5P 18G 0L)", "Miel 1 cuillère (60 kcal | 0P 16G 0L)"], tip: "⚡ Avant séance intense" },
+                    { name: "🍖 Dîner POST-GYM 20h30", cals: 268, p: 69, c: 0, l: 38, recipe: "Poulet Beurre Salade", ingredients: ["Poulet poitrine 250g (385 kcal | 56P 0G 17L)", "Laitue 200g (25 kcal | 2P 4G 0L)", "Beurre 12g (85 kcal | 0P 0G 10L)", "Vinaigre"], tip: "💎 Récupération maximale" }
+                ]
+            },
+            {
+                day: "DIMANCHE (REFEED)",
+                emoji: "☀️",
+                totalCals: 1888,
+                macros: { p: 185, c: 225, l: 72 },
+                meals: [
+                    { name: "🌅 Petit-Déj 6h30", cals: 400, p: 38, c: 45, l: 10, recipe: "Oeufs Toast Fromage Blanc Fruit", ingredients: ["3 oeufs (210 kcal | 18P 1G 15L)", "1 toast pain complet (110 kcal | 4P 20G 1L)", "150g fromage blanc 0% (50 kcal | 12P 3G 0L)", "1 banane (100 kcal | 1P 27G 0L)", "1 cuillère olive oil (120 kcal | 0P 0G 14L)"], tip: "✨ DIMANCHE REFEED = pédal au plancher" },
+                    { name: "🥗 Déjeuner REFEED++ 12h30", cals: 550, p: 45, c: 80, l: 15, recipe: "Poulet Riz Patate Douce REFEED", ingredients: ["Poulet 180g (280 kcal | 52P 0G 6L)", "Riz blanc 200g cuit (140 kcal | 2.5P 31G 0L)", "Patate douce 150g (65 kcal | 1P 15G 0L)", "Brocoli 100g (30 kcal | 3P 5G 0L)", "Olive oil 0.5 (120 kcal | 0P 0G 14L)"], tip: "🎉 +150g glucides = repos musculaire" },
+                    { name: "🍌 Snack 1 REFEED++ 15h", cals: 200, p: 20, c: 30, l: 5, recipe: "Yaourt Fruit Granola", ingredients: ["Yaourt grec 200g (110 kcal | 20P 7G 0L)", "1 banane (105 kcal | 1P 27G 0L)", "Granola 30g (140 kcal | 4P 18G 5L)"], tip: "🎊 Plaisir dimanche" },
+                    { name: "🍎 Snack 2 REFEED+ 17h", cals: 200, p: 15, c: 35, l: 5, recipe: "Pain Beurre Fruit REFEED", ingredients: ["Pain complet 60g (160 kcal | 6P 30G 1L)", "Beurre 10g (72 kcal | 0P 0G 8L)", "Miel 1 cuillère (60 kcal | 0P 16G 0L)"], tip: "⚡ +80g glucides supplémentaires" },
+                    { name: "🍖 Dîner 20h30", cals: 238, p: 62, c: 0, l: 37, recipe: "Salmon Oeufs Épinard", ingredients: ["Salmon poêlé 200g (350 kcal | 40P 0G 20L)", "3 oeufs (210 kcal | 18P 1G 15L)", "Épinard 200g (60 kcal | 8P 8G 1L)"], tip: "💎 Protéines dimanche aussi" },
+                    { name: "🍫 BONUS REFEED DIMANCHE 21h", cals: 300, p: 5, c: 55, l: 5, recipe: "Pâtes Chocolate Fraise REFEED", ingredients: ["Pâtes 80g cuit (90 kcal | 3P 18G 0L)", "Sauce chocolat 50g (220 kcal | 3P 27G 12L)", "Fraise fraîche 100g (32 kcal | 1P 7G 0L)"], tip: "🍫 PLAISIR MAXIMUM = dimanche refeed" }
+                ]
+            }
+        ];
+
+        const shoppingData = [
+            { category: "🥚 Œufs & Produits Laitiers", items: [
+                { name: "Œufs (30 pièces)", qty: "3 douzaines", price: "25€" },
+                { name: "Fromage blanc 0%", qty: "3 × 500g", price: "6€" },
+                { name: "Yaourt grec", qty: "2 × 400g", price: "8€" },
+                { name: "Fromage parmesan", qty: "100g", price: "3€" },
+                { name: "Beurre doux", qty: "250g", price: "3€" }
+            ]},
+            { category: "🥩 Protéines Animales", items: [
+                { name: "Poulet poitrine", qty: "1.5kg", price: "12€" },
+                { name: "Poisson blanc", qty: "1kg", price: "10€" },
+                { name: "Salmon", qty: "600g", price: "12€" },
+                { name: "Boeuf haché maigre", qty: "500g", price: "8€" },
+                { name: "Dinde", qty: "500g", price: "7€" },
+                { name: "Crevettes surgelées", qty: "300g", price: "10€" }
+            ]},
+            { category: "🌾 Glucides & Féculents", items: [
+                { name: "Riz blanc", qty: "1kg", price: "2€" },
+                { name: "Riz complet", qty: "500g", price: "1.50€" },
+                { name: "Pâtes complet", qty: "500g", price: "2€" },
+                { name: "Pain complet", qty: "500g", price: "1.50€" },
+                { name: "Flocons avoine", qty: "500g", price: "3€" },
+                { name: "Patate douce", qty: "1.5kg", price: "3€" }
+            ]},
+            { category: "🥬 Fruits & Légumes", items: [
+                { name: "Brocoli frais", qty: "500g", price: "2€" },
+                { name: "Épinard frais/surgelé", qty: "500g", price: "3€" },
+                { name: "Courgette", qty: "500g", price: "1.50€" },
+                { name: "Laitue", qty: "1 pièce", price: "1€" },
+                { name: "Tomate fraîche", qty: "500g", price: "1.50€" },
+                { name: "Bananes", qty: "1kg", price: "1.50€" },
+                { name: "Pommes", qty: "1kg", price: "2€" },
+                { name: "Oranges", qty: "1kg", price: "2€" },
+                { name: "Poires", qty: "500g", price: "2€" },
+                { name: "Pêches", qty: "500g", price: "3€" },
+                { name: "Fraises fraîches", qty: "250g", price: "3€" }
+            ]},
+            { category: "🫒 Huiles & Condiments", items: [
+                { name: "Huile d'olive vierge", qty: "500ml", price: "5€" },
+                { name: "Miel brut", qty: "250g", price: "4€" },
+                { name: "Vinaigre balsamique", qty: "500ml", price: "2€" },
+                { name: "Sel marin", qty: "1kg", price: "1€" },
+                { name: "Poivre noir moulu", qty: "-", price: "2€" },
+                { name: "Citron frais", qty: "2-3 pièces", price: "1€" },
+                { name: "Noix", qty: "100g", price: "2€" },
+                { name: "Amandes crues", qty: "100g", price: "2€" }
+            ]},
+            { category: "💊 Compléments Alimentaires", items: [
+                { name: "Créatine monohydrate 500g", qty: "1", price: "20€" },
+                { name: "Protéine poudre 1kg", qty: "1", price: "25€" },
+                { name: "Multivitamines (100 caps)", qty: "1", price: "12€" },
+                { name: "Magnésium 300mg (100 caps)", qty: "1", price: "8€" },
+                { name: "Spiruline poudre 100g", qty: "1", price: "10€" },
+                { name: "Électrolytes sachets (30)", qty: "1", price: "15€" }
+            ]},
+            { category: "🍫 Bonus Refeed", items: [
+                { name: "Chocolat noir 70%", qty: "100g", price: "3€" },
+                { name: "Granola", qty: "400g", price: "4€" },
+                { name: "Sauce chocolat", qty: "400g", price: "3€" }
+            ]}
+        ];
+
+        const supplementsData = [
+            { name: "Créatine Monohydrate", dose: "5g", timing: "Anytime", benefit: "💪 Muscle + énergie" },
+            { name: "Protéine Poudre", dose: "1-2 scoops/jour", timing: "Post-gym", benefit: "🔥 Récupération" },
+            { name: "Multivitamines", dose: "1 comp", timing: "Petit-déj", benefit: "✨ Immunité" },
+            { name: "Magnésium", dose: "300mg", timing: "Avant lit", benefit: "😴 Sommeil" },
+            { name: "Spiruline", dose: "1 cuillère café", timing: "Snack", benefit: "🌿 Fer + protéines" },
+            { name: "Électrolytes", dose: "1 sachet", timing: "Matin + soir", benefit: "💧 Hydratation" }
+        ];
+
+        let currentDayIndex = 0;
+        let expandedMealIndex = null;
+        let checkedItems = {};
+
+        function showTab(tabName) {
+            document.getElementById('nutrition').classList.add('hidden');
+            document.getElementById('shopping').classList.add('hidden');
+            document.getElementById('mealprep').classList.add('hidden');
+            document.getElementById('supplements').classList.add('hidden');
+            document.getElementById(tabName).classList.remove('hidden');
+
+            if (tabName === 'nutrition') {
+                renderNutrition();
+            } else if (tabName === 'shopping') {
+                renderShopping();
+            } else if (tabName === 'supplements') {
+                renderSupplements();
+            }
+        }
+
+        function selectDay(index) {
+            currentDayIndex = index;
+            expandedMealIndex = null;
+            renderNutrition();
+        }
+
+        function toggleMeal(index) {
+            expandedMealIndex = expandedMealIndex === index ? null : index;
+            renderMeals();
+        }
+
+        function renderNutrition() {
+            const day = nutritionData[currentDayIndex];
+            renderDaySelector();
+            renderDayInfo();
+            renderMeals();
+        }
+
+        function renderDaySelector() {
+            const selector = document.getElementById('daySelector');
+            selector.innerHTML = nutritionData.map((day, i) => `
+                <button class="day-btn ${i === currentDayIndex ? 'active' : ''}" onclick="selectDay(${i})">
+                    <div class="day-emoji">${day.emoji}</div>
+                    <div class="day-name">${day.day.split(' ')[0]}</div>
+                    ${day.day.includes('REFEED') ? '<div style="font-size: 7px; color: #FFD700; margin-top: 2px;">🎉</div>' : ''}
+                </button>
+            `).join('');
+        }
+
+        function renderDayInfo() {
+            const day = nutritionData[currentDayIndex];
+            const info = document.getElementById('dayInfo');
+            info.innerHTML = `
+                <div class="day-info">
+                    <div class="day-info-emoji">${day.emoji}</div>
+                    <div class="day-info-text">
+                        <h2>${day.day}</h2>
+                        <div class="day-cals">${day.totalCals} kcal</div>
+                        <div class="day-macros">P: ${day.macros.p}g | C: ${day.macros.c}g | L: ${day.macros.l}g</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMeals() {
+            const day = nutritionData[currentDayIndex];
+            const meals = document.getElementById('meals');
+            meals.innerHTML = day.meals.map((meal, i) => `
+                <div class="meal ${i === expandedMealIndex ? 'expanded' : ''}" onclick="toggleMeal(${i})">
+                    <div class="meal-number">${i + 1}</div>
+                    <div class="meal-info">
+                        <div class="meal-name">${meal.name}</div>
+                        <div class="meal-time">${meal.cals} kcal</div>
+                    </div>
+                    <div class="meal-macros">P${meal.p} C${meal.c} L${meal.l}</div>
+                </div>
+                ${i === expandedMealIndex ? `
+                    <div class="meal-details">
+                        <div class="meal-recipe">${meal.recipe}</div>
+                        <div class="ingredients-label">Ingrédients :</div>
+                        ${meal.ingredients.map(ing => `<div class="ingredient">• ${ing}</div>`).join('')}
+                        <div class="meal-tip">💡 ${meal.tip}</div>
+                    </div>
+                ` : ''}
+            `).join('');
+
+            meals.innerHTML += `
+                <div class="summary-box">
+                    <div class="summary-label">Total Jour</div>
+                    <div class="summary-values">${day.totalCals} kcal | P${day.macros.p} C${day.macros.c} L${day.macros.l}</div>
+                </div>
+            `;
+        }
+
+        function toggleShoppingItem(itemId) {
+            checkedItems[itemId] = !checkedItems[itemId];
+            renderShopping();
+        }
+
+        function renderShopping() {
+            const shopping = document.getElementById('shoppingList');
+            shopping.innerHTML = shoppingData.map((cat, catIdx) => `
+                <div class="shopping-category">
+                    <div class="shopping-category-title">${cat.category}</div>
+                    ${cat.items.map((item, itemIdx) => {
+                        const itemId = `${catIdx}-${itemIdx}`;
+                        const isChecked = checkedItems[itemId];
+                        return `
+                            <div class="shopping-item ${isChecked ? 'checked' : ''}" onclick="toggleShoppingItem('${itemId}')">
+                                <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="event.stopPropagation(); toggleShoppingItem('${itemId}')">
+                                <div class="shopping-item-info">
+                                    <div class="shopping-item-name">${item.name}</div>
+                                    <div class="shopping-item-qty">${item.qty}</div>
+                                </div>
+                                <div class="shopping-item-price">${item.price}</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `).join('');
+        }
+
+        function renderSupplements() {
+            const supplements = document.getElementById('supplementsList');
+            supplements.innerHTML = supplementsData.map(supp => `
+                <div class="supplement-item">
+                    <div class="supplement-info">
+                        <div class="supplement-name">${supp.name}</div>
+                        <div class="supplement-detail">${supp.dose} • ${supp.timing}</div>
+                    </div>
+                    <div class="supplement-benefit">${supp.benefit}</div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize
+        renderNutrition();
+    </script>
+</body>
+</html>
